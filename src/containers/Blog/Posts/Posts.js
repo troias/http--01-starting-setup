@@ -1,7 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import Post from '../../../components/Post/Post'
-import classes from './Posts.module.css'
+import './Posts.module.css'
+import { Link } from 'react-router-dom'
 
 class Posts extends React.Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class Posts extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props)
         axios.get("https://jsonplaceholder.typicode.com/posts").then((x) => {
             const posts = x.data.slice(0, 4);
             const updatedPost = posts.map((x) => {
@@ -45,16 +47,21 @@ class Posts extends React.Component {
         if (!this.state.error) {
             posts = this.state.posts.map((x) => {
                 return (
-                    <Post
+                    <Link
+                        to={'/' + x.id}
                         key={x.id}
-                        title={x.title}
-                        author={x.author}
-                        clicked={() => this.postSelectedHandler(x.id)}
-                    />
-                );
+                    >
+                        <Post
+
+                            title={x.title}
+                            author={x.author}
+                            clicked={() => this.postSelectedHandler(x.id)}
+                        />
+                    </Link>
+                )
             });
         }
-  
+
         return (
             <section className="Posts">
                 {posts}

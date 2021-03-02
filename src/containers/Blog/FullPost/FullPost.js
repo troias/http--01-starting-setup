@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 
 import "./FullPost.css";
-import post from "../Post/Post";
+
 
 class FullPost extends Component {
   constructor(props) {
@@ -12,14 +12,15 @@ class FullPost extends Component {
     };
   }
 
-  componentDidUpdate() {
-    if (this.props.id) {
+  componentDidMount() {
+    console.log(this.props.match.params.dynamicValue)
+    if (this.props.match.params.dynamicValue) {
       if (
         !this.state.loadedPosts ||
         (this.state.loadedPosts && this.state.loadedPosts.id !== this.props.id)
       ) {
         axios
-          .get("https://jsonplaceholder.typicode.com/posts/" + this.props.id)
+          .get("https://jsonplaceholder.typicode.com/posts/" +this.props.match.params.dynamicValue)
           .then((x) => {
             this.setState({
               loadedPosts: x.data,

@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import "./Blog.css";
 import Posts from './Posts/Posts'
-import { Route, Link } from 'react-router-dom'
+import { Route, NavLink } from 'react-router-dom'
 import NewPost from './NewPost/NewPost'
+import { withRouter } from 'react-router-dom'
+import FullPost from './FullPost/FullPost'
 
 class Blog extends Component {
   constructor(props) {
@@ -22,22 +24,30 @@ class Blog extends Component {
         <header>
           <nav>
             <ul>
-              <li><Link to="/">Home</Link> </li>
-              <li><Link to={{
-                pathname: "/new", 
-                hash: '#submit', 
+              <li><NavLink to="/"
+                exact
+                activeClassName="my-active"
+                activeStyle={{
+                  color: "gold" ,
+                  textDecoration: "underline"
+                }}>Home</NavLink> </li>
+              <li><NavLink to={{
+                pathname: '/new',
+                hash: '#submit',
                 search: '?'
-              }}>New Post</Link></li>
+              }} exact
+                activeClassName="my-active"
+              >New Post</NavLink></li>
             </ul>
           </nav>
         </header>
         <Route path="/" exact component={Posts} />
-        <Route path="/new"  component={() =>
-          <NewPost />
-        } />
+        <Route path="/new"  exact component={NewPost} />
+        <Route path="/:dynamicValue" exact component={FullPost} />
+
       </div>
     );
   }
 }
 
-export default Blog;
+export default withRouter(Blog);

@@ -10,7 +10,12 @@ class NewPost extends Component {
         author: 'Max'
     }
 
+    componentDidMount() {
+        console.log(this.props)
+    }
+
     postDataHandler = () => {
+  
         const post = {
             title: this.state.title,
             content: this.state.content,
@@ -22,6 +27,7 @@ class NewPost extends Component {
     }
 
     render () {
+        
         return (
             <div className="NewPost">
                 <h1>Add a Post</h1>

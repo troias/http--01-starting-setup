@@ -23,3 +23,7 @@
     font-weight: 700    ;
     color: #fa923f;
  }
+
+ .Blog a.my-active {
+    color: pink;
+}
