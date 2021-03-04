@@ -13,20 +13,27 @@ class FullPost extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props.match.params.dynamicValue)
-    if (this.props.match.params.dynamicValue) {
+    this.loadData()
+    
+  }
+  componentDidUpdate() {
+    this.loadData()
+  }
+
+  loadData() {
+    if (this.props.match.params.id) {
       if (
         !this.state.loadedPosts ||
-        (this.state.loadedPosts && this.state.loadedPosts.id !== this.props.id)
+        (this.state.loadedPosts && this.state.loadedPosts.id !== +this.props.match.params.id)
       ) {
         axios
-          .get("https://jsonplaceholder.typicode.com/posts/" +this.props.match.params.dynamicValue)
+          .get("https://jsonplaceholder.typicode.com/posts/" + this.props.match.params.id)
           .then((x) => {
             this.setState({
               loadedPosts: x.data,
             })
           }).catch(err => {
-            console.log(err)
+            // console.log(err)
           })
       }
     }
@@ -34,24 +41,25 @@ class FullPost extends Component {
 
   deleteHandler = () => {
     axios
-      .delete("https://jsonplaceholder.typicode.com/posts/" + this.props.id)
+      .delete("https://jsonplaceholder.typicode.com/posts/" + this.props.match.params.id)
       .then((x) => {
         console.log(x);
       });
   };
-
+ 
   render() {
     let post = <p style={{ textAlign: "center" }}>Please select a post</p>;
-    if (this.props.id) {
+    if (this.props.match.params.id) {
       post = <p style={{ textAlign: "center" }}>loading</p>;
     }
-    if (this.state.loadedPosts) {
+    if ( this.state.loadedPosts ) {
       post = (
         <div className="FullPost">
           <h1>{this.state.loadedPosts.title}</h1>
           <p>{this.state.loadedPosts.body}</p>
           <div className="Edit">
-            <button className="Delete" onClick={this.deleteHandler}>
+            <button className="Delete" 
+            onClick={this.deleteHandler}>
               Delete
             </button>
           </div>

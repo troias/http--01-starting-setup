@@ -2,7 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import Post from '../../../components/Post/Post'
 import './Posts.module.css'
-import { Link } from 'react-router-dom'
+import { Route } from 'react-router';
+import FullPost from '../FullPost/FullPost'
+
+
 
 class Posts extends React.Component {
     constructor(props) {
@@ -14,7 +17,7 @@ class Posts extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props)
+      
         axios.get("https://jsonplaceholder.typicode.com/posts").then((x) => {
             const posts = x.data.slice(0, 4);
             const updatedPost = posts.map((x) => {
@@ -35,9 +38,7 @@ class Posts extends React.Component {
     }
 
     postSelectedHandler = (id) => {
-        this.setState({
-            selectedPostID: id
-        });
+        this.props.history.push( '/posts/' + id );
     };
 
     render() {
@@ -47,28 +48,39 @@ class Posts extends React.Component {
         if (!this.state.error) {
             posts = this.state.posts.map((x) => {
                 return (
-                    <Link
-                        to={'/' + x.id}
+                    // <Link
+                    //     to={'/' + x.id}
+                    //     key={x.id}
+                    // >
+                    <Post
                         key={x.id}
-                    >
-                        <Post
-
-                            title={x.title}
-                            author={x.author}
-                            clicked={() => this.postSelectedHandler(x.id)}
-                        />
-                    </Link>
+                        title={x.title}
+                        author={x.author}
+                        clicked={() => this.postSelectedHandler(x.id)}
+                    />
+                    /* </Link> */
                 )
             });
         }
 
         return (
-            <section className="Posts">
-                {posts}
-            </section>
+            <div>
+                <section className="Posts">
+                    {posts}
+                </section>
+                <Route
+                    path={this.props.match.url + '/:id'}
+                    exact
+                    component={FullPost}
+                />
+            </div>
+
         )
     }
 }
 
 export default Posts
+
+
+
 
